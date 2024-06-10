@@ -93,15 +93,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		//メッセージなし
 		else
 		{
-			
-
 			//ゲームの処理
 			Direct3D::BeginDraw();
 			//カメラ更新
 			Camera::Update();
 			//↓1度ずつ回転するための変数
 			static float rot = 0;
-			rot += 0.05;
+			rot += 0.01;
 			XMMATRIX rmat = XMMatrixRotationY(rot);
 			static float factor = 0.0;
 			factor += 0.001;

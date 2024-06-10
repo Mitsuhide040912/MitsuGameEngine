@@ -35,33 +35,30 @@ HRESULT Quad::Initialize()
 		//XMVectorSet(-1.0f, 0.0f, -1.0f, 0.0f),//四角錐の頂点
 		//XMVectorSet(0.0f, 1.3, 0.0f, 0.0f),//四角錐の頂点
 	};
-
+	//インデックス情報
+	//int index[] = { 0,2,3, 0,1,2 };
+	int index[] = { 0,1,2, 0,2,3, 4,2,3 ,0,4,3 ,1,4,0 ,2,4,1};
+	//int index[] = { 0,1,2, 0,2,3, 3,2,4 };
 	// 頂点データ用バッファの設定
 	D3D11_BUFFER_DESC bd_vertex;
- 
+
 	bd_vertex.ByteWidth = sizeof(vertices);
 	bd_vertex.Usage = D3D11_USAGE_DEFAULT;
 	bd_vertex.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd_vertex.CPUAccessFlags = 0;
 	bd_vertex.MiscFlags = 0;
 	bd_vertex.StructureByteStride = 0;
- 
+
 	D3D11_SUBRESOURCE_DATA data_vertex;
- 
+
 	data_vertex.pSysMem = vertices;
- 
-	if(FAILED(Direct3D::pDevice->CreateBuffer(&bd_vertex, &data_vertex, &pVertexBuffer_)))
+
+	if (FAILED(Direct3D::pDevice->CreateBuffer(&bd_vertex, &data_vertex, &pVertexBuffer_)))
 	{
 		MessageBox(NULL, L"の作成に失敗", NULL, MB_OK);
 		return E_FAIL;
 	}
- 
-
-	//インデックス情報
-	int index[] = { 0,1,2, 0,2,3, 4,2,3 ,0,4,3 ,1,4,0 ,2,4,1};
-	//int index[] = { 0,1,2, 0,2,3, 3,2,4 };
 	// インデックスバッファを生成する
-
 	D3D11_BUFFER_DESC   bd;
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.ByteWidth = sizeof(index);
@@ -96,7 +93,7 @@ HRESULT Quad::Initialize()
 		return E_FAIL;
 	}
 	pTexture_ = new Texture;
-	pTexture_->Load("Assets\\dice.png");
+	pTexture_->Load("Assets\\mid.png");
 
 	return S_OK;
 }
@@ -187,6 +184,9 @@ void Quad::Release()
 
 	//pTexture_->Release();
 	//SAFE_DELETE(pTexture_);
+
+	pTexture_->Release();
+	SAFE_DELETE(pTexture_);
 
 	SAFE_RELEASE(pConstantBuffer_);
 	SAFE_RELEASE(pIndexBuffer_);
