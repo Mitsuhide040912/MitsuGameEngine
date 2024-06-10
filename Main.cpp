@@ -1,9 +1,12 @@
 //インクルード
 #include <Windows.h>
 #include "Direct3D.h"
+
 #include "Quad.h"
-#include<tchar.h>
-#include "Canera.h"
+//#include<tchar.h>
+#include "Camera.h"
+
+#pragma comment(lib,"d3d11.lib")
 
 //定数宣言
 const wchar_t* WIN_CLASS_NAME = L"SampleGame";  //ウィンドウクラス名
@@ -55,18 +58,23 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		NULL                 //パラメータ（なし）
 	);
 
-	
-
-
   //ウィンドウを表示
 	ShowWindow(hWnd, nCmdShow);
 
-	Direct3D::Initialize(winW, winH, hWnd);
+	HRESULT hr = Direct3D::Initialize(winW, winH, hWnd);
+	if (FAILED(hr))
+	{
+		MessageBox(NULL, L"DirectXの初期化に失敗", NULL, MB_OK);
+		return 0;
+	}
 
 	//Canera::Initialize({ 5,10,-10 }, { 0,0,0 });
-	Canera::Initialize();
-	Quad* q = new Quad();
-	q->Initialize();
+	Camera::Initialize();
+
+	Quad* q;
+	q = new Quad();
+	hr = q->Initialize();
+
 	
 
 	//メッセージループ（何か起きるのを待つ）
@@ -90,7 +98,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//ゲームの処理
 			Direct3D::BeginDraw();
 			//カメラ更新
-			Canera::Update();
+			Camera::Update();
 			//↓1度ずつ回転するための変数
 			static float rot = 0;
 			rot += 0.05;
@@ -108,10 +116,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		}
 	}
 
-	if (FAILED(q->Initialize()))
-	{
-		return 0;
-	}
+	
 	SAFE_DELETE(q);
 	//if (q != nullptr) { delete q; }
 	Direct3D::Release();

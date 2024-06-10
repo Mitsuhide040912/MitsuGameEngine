@@ -15,7 +15,7 @@ namespace Direct3D
 	extern ID3D11DeviceContext* pContext;
 	
 	//初期化
-	void Initialize(int winW, int winH, HWND hWnd);
+	HRESULT Initialize(int winW, int winH, HWND hWnd);
 
 	//シェーダー準備
 	HRESULT InitShader();

@@ -15,9 +15,9 @@ namespace Direct3D
 	ID3D11RasterizerState* pRasterizerState = nullptr;	//ラスタライザー
 
 }
-void Direct3D::Initialize(int winW, int winH, HWND hWnd)
+HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 {
-	
+	HRESULT hr;
 	///////////////////////////いろいろ準備するための設定///////////////////////////////
 	//いろいろな設定項目をまとめた構造体
 	DXGI_SWAP_CHAIN_DESC scDesc;
@@ -85,7 +85,12 @@ void Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	pContext->RSSetViewports(1, &vp);
 #endif // 0
 	//シェーダー準備
-	InitShader();
+	hr = InitShader();
+	if (FAILED(hr))
+	{
+		MessageBox(NULL, L"シェーダの初期化に失敗", NULL, MB_OK);
+	}
+	return hr;
 }
 HRESULT Direct3D::InitShader()
 {

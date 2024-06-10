@@ -5,7 +5,7 @@ using namespace DirectX;
 //-----------------------------------------------------------
 //カメラ
 //-----------------------------------------------------------
-namespace Canera
+namespace Camera
 {
 	//初期化（プロジェクション行列作成）
 	void Initialize();
@@ -25,3 +25,4 @@ namespace Canera
 	//プロジェクション行列を取得
 	XMMATRIX GetProjectionMatrix();
 };
+

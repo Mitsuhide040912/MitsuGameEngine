@@ -1,6 +1,6 @@
-#include "Canera.h"
+#include "Camera.h"
 
-namespace Canera
+namespace Camera
 {
 	//変数
 	XMVECTOR position_;	//カメラの位置（視点）
@@ -10,7 +10,7 @@ namespace Canera
 }
 
 //初期化
-void Canera::Initialize()
+void Camera::Initialize()
 {
 	position_ = XMVectorSet(0, 3, -10, 0);	//カメラの位置
 	target_ = XMVectorSet(0, 0, 0, 0);	//カメラの焦点
@@ -19,32 +19,32 @@ void Canera::Initialize()
 }
 
 //更新
-void Canera::Update()
+void Camera::Update()
 {
 	//ビュー行列の作成
 	viewMatrix_ = XMMatrixLookAtLH(position_, target_, XMVectorSet(0, 1, 0, 0));
 }
 
 //位置を設定
-void Canera::SetPosition(XMVECTOR position)
+void Camera::SetPosition(XMVECTOR position)
 {
 	position = position_;
 }
 
 //焦点を設定
-void Canera::SetTarget(XMVECTOR target)
+void Camera::SetTarget(XMVECTOR target)
 {
 	target = target_;
 }
 
 //ビュー行列を取得
-XMMATRIX Canera::GetViewMatrix()
+XMMATRIX Camera::GetViewMatrix()
 {
 	return viewMatrix_;
 }
 
 //プロジェクション行列を取得
-XMMATRIX Canera::GetProjectionMatrix()
+XMMATRIX Camera::GetProjectionMatrix()
 {
 	return projMatrix_;
 }
