@@ -1,5 +1,6 @@
 #include <d3dcompiler.h>
 #include "Direct3D.h"
+#include <DirectXMath.h>
 #include "Texture.h"
 //変数
 namespace Direct3D
@@ -109,7 +110,8 @@ HRESULT Direct3D::InitShader()
 	//頂点インプットレイアウト
 	D3D11_INPUT_ELEMENT_DESC layout[] = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//位置
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(D3D11_SAMPLER_DESC) , D3D11_INPUT_PER_VERTEX_DATA, 0 },//UV座標
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::XMVECTOR) , D3D11_INPUT_PER_VERTEX_DATA, 0 },//UV座標
+
 	};
 	hr = pDevice->CreateInputLayout(layout, 2, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout);
 	if (FAILED(hr))
@@ -132,7 +134,8 @@ HRESULT Direct3D::InitShader()
 
 	//ラスタライザ作成
 	D3D11_RASTERIZER_DESC rdc = {};
-	rdc.CullMode = D3D11_CULL_BACK;//多角形の裏側は描画しない(カリング)
+	//rdc.CullMode = D3D11_CULL_BACK; //多角形の裏側は描画しない(カリング)
+	rdc.CullMode = D3D11_CULL_NONE;//多角形の裏側は描画する
 	//rdc.CullMode = D3D11_CULL_FRONT;
 	rdc.FillMode = D3D11_FILL_SOLID;//多角形の内部を塗りつぶす
 	//rdc.FillMode = D3D11_FILL_WIREFRAME;
@@ -149,7 +152,6 @@ HRESULT Direct3D::InitShader()
 //初期化
 void Direct3D::BeginDraw()
 {
-	
 	//背景の色
 	float clearColor[4] = { 0.0f, 1.0f, 1.0f, 1.0f };//R,G,B,A
 

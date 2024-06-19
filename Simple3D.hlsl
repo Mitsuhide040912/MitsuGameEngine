@@ -20,12 +20,13 @@ struct VS_OUT
 {
     float4 pos : SV_POSITION; //位置
     float2 uv : TEXCOORD; //UV座標
+    float4 color : COLOR; //色（明るさ）
 };
 
 //───────────────────────────────────────
 // 頂点シェーダ
 //───────────────────────────────────────
-VS_OUT VS(float4 pos : POSITION,float4 uv : TEXCOORD)
+VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 {
 	//ピクセルシェーダーへ渡す情報
     VS_OUT outData;
@@ -34,6 +35,10 @@ VS_OUT VS(float4 pos : POSITION,float4 uv : TEXCOORD)
 	//スクリーン座標に変換し、ピクセルシェーダーへ
     outData.pos = mul(pos, matWVP);
     outData.uv = uv;
+    
+    float4 light = float4(-1, 0.5, -0.7, 0);//光源の逆ベクトル
+    light = normalize(light);
+    outData.color = dot(normal, light);
 
 	//まとめて出力
     return outData;
@@ -45,7 +50,8 @@ VS_OUT VS(float4 pos : POSITION,float4 uv : TEXCOORD)
 float4 PS(VS_OUT inData) : SV_Target
 {
     //return float4(1, 1, 1, 1);
-    
+    float4 myUv = { 0.125, 0.25, 0, 0 };
     //return g_texture.Sample(g_)
-    return g_texture.Sample(g_sampler, inData.uv);
+    //return g_texture.Sample(g_sampler, myUv);
+    return g_texture.Sample(g_sampler, inData.uv) * inData.color;
 }

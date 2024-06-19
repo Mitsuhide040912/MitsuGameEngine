@@ -21,12 +21,12 @@ HRESULT Texture::Load(std::string filename)
     HRESULT hr = S_OK;
 
     std::wstring wstr(filename.begin(), filename.end());
-    hr = LoadFromWICFile(wstr.c_str(), WIC_FLAGS::WIC_FLAGS_NONE, &matdata, image);//←エラーメッセージ
+    hr = LoadFromWICFile(wstr.c_str(), WIC_FLAGS::WIC_FLAGS_NONE, &matdata, image);
     if (FAILED(hr))
     {
         return S_FALSE;
     }
-
+    //↓サンプラーの設定
     D3D11_SAMPLER_DESC  SamDesc;
     ZeroMemory(&SamDesc, sizeof(D3D11_SAMPLER_DESC));
     SamDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -39,7 +39,7 @@ HRESULT Texture::Load(std::string filename)
         return S_FALSE;
     }
 
-
+    //↓シェーダーリソースビューの設定
     D3D11_SHADER_RESOURCE_VIEW_DESC srv = {};
     srv.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     srv.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;

@@ -18,6 +18,14 @@ void Camera::Initialize()
 	projMatrix_ = XMMatrixPerspectiveFovLH(XM_PIDIV4, (FLOAT)800 / (FLOAT)600, 0.1f, 100.0f);
 }
 
+void Camera::Initialize(XMVECTOR _position, XMVECTOR _target)
+{
+	position_ = _position;	//カメラの位置
+	target_ = _target;//カメラの焦点
+	//プロジェクション行列
+	projMatrix_ = XMMatrixPerspectiveFovLH(XM_PIDIV4, (FLOAT)800 / (FLOAT)600, 0.1f, 100.0f);
+}
+
 //更新
 void Camera::Update()
 {
@@ -28,13 +36,13 @@ void Camera::Update()
 //位置を設定
 void Camera::SetPosition(XMVECTOR position)
 {
-	position = position_;
+	position = position;
 }
 
 //焦点を設定
 void Camera::SetTarget(XMVECTOR target)
 {
-	target = target_;
+	target = target;
 }
 
 //ビュー行列を取得

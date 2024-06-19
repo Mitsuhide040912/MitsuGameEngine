@@ -99,7 +99,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			Camera::Update();
 			//«1“x‚¸‚Â‰ñ“]‚·‚é‚½‚ß‚Ì•Ï”
 			static float rot = 0;
-			rot += 0.01;
+			rot += 0.001;
 			XMMATRIX rmat = XMMatrixRotationY(rot);
 			static float factor = 0.0;
 			factor += 0.001;
