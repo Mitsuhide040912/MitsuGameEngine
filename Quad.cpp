@@ -1,3 +1,4 @@
+
 #include "Quad.h"
 #include "Camera.h"
 Quad::Quad()
@@ -15,19 +16,19 @@ HRESULT Quad::Initialize()
 	// 頂点情報
 	VERTEX vertices[] =
 	{
-		//{ XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.0, 0.0, 0.0, 0.0)},	// 四角形の頂点（左上）, UV
-		//{ XMVectorSet(1.0f,  1.0f, 0.0f, 0.0f),  XMVectorSet(1.0, 0.0, 0.0, 0.0)},	// 四角形の頂点（右上）, UV
-		//{ XMVectorSet(1.0f, -1.0f, 0.0f, 0.0f),  XMVectorSet(1.0, 1.0, 0.0, 0.0)},	// 四角形の頂点（右下）, UV
-		//{ XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.0, 1.0, 0.0, 0.0)}	// 四角形の頂点（左下）, UV
+		{ XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(0.0, 0.0, 0.0, 0.0)},	// 四角形の頂点（左上）, UV
+		{ XMVectorSet(1.0f,  1.0f, 0.0f, 0.0f),  XMVectorSet(1.0, 0.0, 0.0, 0.0)},	// 四角形の頂点（右上）, UV
+		{ XMVectorSet(1.0f, -1.0f, 0.0f, 0.0f),  XMVectorSet(1.0, 1.0, 0.0, 0.0)},	// 四角形の頂点（右下）, UV
+		{ XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f), XMVectorSet(0.0, 1.0, 0.0, 0.0)}	// 四角形の頂点（左下）, UV
 		//{ XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f),XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f) },   // 四角形の頂点（左上）
 		//{ XMVectorSet(1.0f,  1.0f, 0.0f, 0.0f),	XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f) },   // 四角形の頂点（右上）
 		//{ XMVectorSet(1.0f, -1.0f, 0.0f, 0.0f),	XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f) },   // 四角形の頂点（右下）
 		//{ XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f),XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f) },   // 四角
-		XMVectorSet(-1.0f,    1.0f, 0.0f, 0.0f),	// 四角形の頂点（左上）
-		XMVectorSet(1.0f,     1.0f, 0.0f, 0.0f),	// 四角形の頂点（右上）
-		XMVectorSet(1.0f,    -1.0f, 0.0f, 0.0f),	// 四角形の頂点（右下）
-		XMVectorSet(-1.0f,   -1.0f, 0.0f, 0.0f),	// 四角形の頂点（左下）	
-		XMVectorSet( 0.0f,    -2.0f, 0.0f, 0.0f),
+		//XMVectorSet(-1.0f,    1.0f, 0.0f, 0.0f),	// 四角形の頂点（左上）
+		//XMVectorSet(1.0f,     1.0f, 0.0f, 0.0f),	// 四角形の頂点（右上）
+		//XMVectorSet(1.0f,    -1.0f, 0.0f, 0.0f),	// 四角形の頂点（右下）
+		//XMVectorSet(-1.0f,   -1.0f, 0.0f, 0.0f),	// 四角形の頂点（左下）	
+		//XMVectorSet( 0.0f,    -2.0f, 0.0f, 0.0f),
 		 
 		//XMVectorSet(-1.0f,  0.0f, 1.0f, 0.0f),//四角錐の頂点
 		//XMVectorSet(1.0f,  0.0f, 1.0f, 0.0f),//四角錐の頂点
@@ -36,13 +37,9 @@ HRESULT Quad::Initialize()
 		//XMVectorSet(0.0f, 1.3, 0.0f, 0.0f),//四角錐の頂点
 	};
 	//インデックス情報
-	//int index[] = { 0,2,3, 0,1,2 };
-	int index[] = { 0,1,2, 0,2,3, 4,2,3 ,0,4,3 ,1,4,0 ,2,4,1};
-	//int index[] = { 0,1,2, 0,2,3, 3,2,4 };
-	//int index[] = { 0,1,2, 0,2,3, 0,1,4, 0,4,3, 1,2,5, 1,5,1 };
+	int index[] = { 0,2,3, 0,1,2 };
 	// 頂点データ用バッファの設定
 	D3D11_BUFFER_DESC bd_vertex;
-
 	bd_vertex.ByteWidth = sizeof(vertices);
 	bd_vertex.Usage = D3D11_USAGE_DEFAULT;
 	bd_vertex.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -53,11 +50,11 @@ HRESULT Quad::Initialize()
 	D3D11_SUBRESOURCE_DATA data_vertex;
 
 	data_vertex.pSysMem = vertices;
-
-	if (FAILED(Direct3D::pDevice->CreateBuffer(&bd_vertex, &data_vertex, &pVertexBuffer_)))
+	hr = Direct3D::pDevice->CreateBuffer(&bd_vertex, &data_vertex, &pVertexBuffer_);
+	if (FAILED(hr))
 	{
-		MessageBox(NULL, L"の作成に失敗", NULL, MB_OK);
-		return E_FAIL;
+		MessageBox(NULL, L"頂点バッファの作成に失敗", NULL, MB_OK);
+		return hr;
 	}
 	// インデックスバッファを生成する
 	D3D11_BUFFER_DESC   bd;
@@ -71,12 +68,14 @@ HRESULT Quad::Initialize()
 	InitData.pSysMem = index;
 	InitData.SysMemPitch = 0;
 	InitData.SysMemSlicePitch = 0;
-	if (FAILED(Direct3D::pDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer_)))
+
+	hr = Direct3D::pDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer_);
+
+	if (FAILED(hr))
 	{
-		MessageBox(NULL, L"頂点の作成に失敗", NULL, MB_OK);
-		return E_FAIL;
+		MessageBox(NULL, L"インデックスの作成に失敗", NULL, MB_OK);
+		return hr;
 	}
-	Direct3D::pDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer_);
 
 	//コンスタントバッファ作成
 	D3D11_BUFFER_DESC cb;
@@ -88,10 +87,11 @@ HRESULT Quad::Initialize()
 	cb.StructureByteStride = 0;
 
 	// コンスタントバッファの作成
-	if (FAILED(Direct3D::pDevice->CreateBuffer(&cb, nullptr, &pConstantBuffer_)))
+	hr = Direct3D::pDevice->CreateBuffer(&cb, nullptr, &pConstantBuffer_);
+	if (FAILED(hr))
 	{
-		MessageBox(NULL, L"バッファの作成に失敗", NULL, MB_OK);
-		return E_FAIL;
+		MessageBox(NULL, L"コンスタントバッファの作成に失敗", NULL, MB_OK);
+		return hr;
 	}
 	pTexture_ = new Texture;
 	pTexture_->Load("Assets\\dice.png");
@@ -123,7 +123,7 @@ void Quad::Draw()
 	Direct3D::pContext->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
 	Direct3D::pContext->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
 
-	Direct3D::pContext->DrawIndexed(18, 0, 0);
+	Direct3D::pContext->DrawIndexed(6, 0, 0);
 }
 
 void Quad::Draw(XMMATRIX& worldMatrix)
@@ -163,10 +163,9 @@ void Quad::Draw(XMMATRIX& worldMatrix)
 	ID3D11ShaderResourceView* pSRV = pTexture_->GetSRV();
 	Direct3D::pContext->PSSetShaderResources(0, 1, &pSRV);
 
-	Direct3D::pContext->DrawIndexed(18, 0, 0);
+	Direct3D::pContext->DrawIndexed(6, 0, 0);
 
 }
-
 //void Quad::Draw(XMMATRIX& worldMatrix)
 //{
 //	//コンスタントバッファに渡す情報
@@ -175,8 +174,9 @@ void Quad::Draw(XMMATRIX& worldMatrix)
 //
 //	CONSTANT_BUFFER cb;
 //
-//	cb.matWVP = XMMatrixTranspose(worldMatrix * Canera::GetViewMatrix() * Canera::GetProjectionMatrix());
+//	cb.matWVP = XMMatrixTranspose(worldMatrix * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
 //}
+//
 
 void Quad::Release()
 {
@@ -185,9 +185,6 @@ void Quad::Release()
 
 	//pTexture_->Release();
 	//SAFE_DELETE(pTexture_);
-
-	pTexture_->Release();
-	SAFE_DELETE(pTexture_);
 
 	SAFE_RELEASE(pConstantBuffer_);
 	SAFE_RELEASE(pIndexBuffer_);

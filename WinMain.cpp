@@ -3,9 +3,9 @@
 #include "Direct3D.h"
 
 #include "Quad.h"
-//#include<tchar.h>
 #include "Camera.h"
-
+#include "Dice.h"
+//#include "Sprite.h"
 #pragma comment(lib,"d3d11.lib")
 
 //定数宣言
@@ -65,17 +65,29 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	if (FAILED(hr))
 	{
 		MessageBox(NULL, L"DirectXの初期化に失敗", NULL, MB_OK);
-		return 0;
+		return hr;
 	}
 
 	//Canera::Initialize({ 5,10,-10 }, { 0,0,0 });
 	Camera::Initialize();
 
-	Quad* q;
+	/*Quad* q;
 	q = new Quad();
-	hr = q->Initialize();
-
+	hr = q->Initialize();*/
+	Dice* d;
+	d = new Dice();
+	hr = d->Initialize();
+	/*std::string textureData("Assets\\dice.png");
+	Sprite* pSprite;
+	pSprite = new Sprite();
+	hr = pSprite->Initialize();*/
 	
+
+	if (FAILED(hr))
+	{
+		MessageBox(NULL, L"Quadの初期化に失敗", NULL, MB_OK);
+		return 0;
+	}
 
 	//メッセージループ（何か起きるのを待つ）
 	MSG msg;
@@ -106,16 +118,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			XMMATRIX mat = XMMatrixIdentity();
 			XMMATRIX tmat = XMMatrixTranslation(2.0*sin(factor), 2.0*cos(factor), 0.0f);
 			mat = rmat * tmat;
-			q->Draw(mat);
+			//q->Draw(mat);
+			d->Draw(mat);
+			//pSprite->Draw(mat);
 			//描画処理
 			Direct3D::EndDraw();
-
-			
 		}
 	}
-
-	
-	SAFE_DELETE(q);
+	//SAFE_DELETE(q);
 	//if (q != nullptr) { delete q; }
 	Direct3D::Release();
 	

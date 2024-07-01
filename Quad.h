@@ -9,6 +9,7 @@ using namespace DirectX;
 struct CONSTANT_BUFFER
 {
 	XMMATRIX	matWVP;
+	XMMATRIX    matW;
 };
 
 //頂点情報
@@ -21,6 +22,7 @@ struct VERTEX
 
 class Quad
 {
+protected:
 	ID3D11Buffer* pVertexBuffer_;	//頂点バッファ
 	ID3D11Buffer* pIndexBuffer_;
 	ID3D11Buffer* pConstantBuffer_;	//コンスタントバッファ
