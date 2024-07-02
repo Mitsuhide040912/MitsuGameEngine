@@ -2,10 +2,11 @@
 #include <Windows.h>
 #include "Direct3D.h"
 
-#include "Quad.h"
+//#include "Quad.h"
 #include "Camera.h"
-#include "Dice.h"
-//#include "Sprite.h"
+//#include "Dice.h"
+#include "Sprite.h"
+#include "Transform.h"
 #pragma comment(lib,"d3d11.lib")
 
 //’è”éŒ¾
@@ -74,13 +75,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	/*Quad* q;
 	q = new Quad();
 	hr = q->Initialize();*/
-	Dice* d;
+	/*Dice* d;
 	d = new Dice();
-	hr = d->Initialize();
-	/*std::string textureData("Assets\\dice.png");
+	hr = d->Initialize();*/
+	std::string textureData("Assets\\dice.png");
 	Sprite* pSprite;
 	pSprite = new Sprite();
-	hr = pSprite->Initialize();*/
+	hr = pSprite->Load(textureData);
 	
 
 	if (FAILED(hr))
@@ -119,8 +120,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			XMMATRIX tmat = XMMatrixTranslation(2.0*sin(factor), 2.0*cos(factor), 0.0f);
 			mat = rmat * tmat;
 			//q->Draw(mat);
-			d->Draw(mat);
-			//pSprite->Draw(mat);
+			//d->Draw(mat);
+			Transform trs;
+			trs.rotate_.z = 45;
+			trs.position_.x = trs.position_.x + 10.0f;
+			pSprite->Draw(trs);
 			//•`‰æˆ—
 			Direct3D::EndDraw();
 		}

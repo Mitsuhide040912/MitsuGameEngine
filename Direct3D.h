@@ -9,6 +9,13 @@
 #define SAFE_DELETE(p) if(p != nullptr){ delete p; p = nullptr;}
 #define SAFE_RELEASE(p) if(p != nullptr){ p->Release(); p = nullptr;}
 
+enum SHADER_TYPE
+{
+	SHADER_2D,
+	SHADER_3D,
+	SHADER_MAX,
+};
+
 namespace Direct3D
 {
 	
@@ -18,7 +25,9 @@ namespace Direct3D
 
 	//シェーダー準備
 	HRESULT InitShader();
-
+	HRESULT InitShader3D();
+	HRESULT InitShader2D();
+	void SetShader(SHADER_TYPE type);
 	//描画開始
 	void BeginDraw();
 
