@@ -610,9 +610,6 @@ void Sprite::PassDataToCB(DirectX::XMMATRIX worldMatrix)
 	Direct3D::pContext->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
 	memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
 	Direct3D::pContext->Unmap(pConstantBuffer_, 0);	//再開
-
-
-
 }
 
 void Sprite::SetBufferToPipeline()
@@ -637,6 +634,4 @@ void Sprite::SetBufferToPipeline()
 
 	ID3D11ShaderResourceView* pSRV = pTexture_->GetSRV();
 	Direct3D::pContext->PSSetShaderResources(0, 1, &pSRV);
-
-
 }

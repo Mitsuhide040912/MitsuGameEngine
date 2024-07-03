@@ -196,14 +196,10 @@ void Direct3D::Release()
 	SAFE_RELEASE(pDevice);
 }
 #endif // 0
-
 #if 1
-
 #include <d3dcompiler.h>
 #include "Direct3D.h"
 #include <DirectXMath.h>
-
-
 //変数
 namespace Direct3D
 {
@@ -223,8 +219,6 @@ namespace Direct3D
 		ID3D11PixelShader* pPixelShader = nullptr;		//ピクセルシェーダー
 		ID3D11InputLayout* pVertexLayout = nullptr;	//頂点インプットレイアウト
 		ID3D11RasterizerState* pRasterizerState = nullptr;	//ラスタライザー
-
-
 	};
 	SHADER_BUNDLE shaderBundle[SHADER_MAX];
 }
@@ -480,7 +474,7 @@ HRESULT Direct3D::InitShader3D()
 
 	//ラスタライザ作成
 	D3D11_RASTERIZER_DESC rdc = {};
-	rdc.CullMode = D3D11_CULL_NONE;  //多角形の裏側は描画しない（カリング）
+	rdc.CullMode = D3D11_CULL_BACK;  //多角形の裏側は描画しない（カリング）
 	rdc.FillMode = D3D11_FILL_SOLID; //多角形の内部を塗りつぶす
 	rdc.FrontCounterClockwise = FALSE; //反時計回りを表にするか（がfalseなので時計回りが表）
 	hr = pDevice->CreateRasterizerState(&rdc, &shaderBundle[SHADER_TYPE::SHADER_3D].pRasterizerState);

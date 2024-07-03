@@ -4,9 +4,9 @@ class Dice
 	:public Quad
 {
 public:
-	Dice();
+	Dice() :Quad() {};
 	~Dice();
-	virtual HRESULT Initialize();
-	virtual void Draw(XMMATRIX& worldMatrix);
+	 void InitVertexData()override;
+	 void InitIndexData()override;
 };
 

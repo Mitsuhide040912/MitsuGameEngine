@@ -2,10 +2,10 @@
 #include <Windows.h>
 #include "Direct3D.h"
 
-//#include "Quad.h"
+#include "Quad.h"
 #include "Camera.h"
-//#include "Dice.h"
-#include "Sprite.h"
+#include "Dice.h"
+//#include "Sprite.h"
 #include "Transform.h"
 #pragma comment(lib,"d3d11.lib")
 
@@ -72,16 +72,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	//Canera::Initialize({ 5,10,-10 }, { 0,0,0 });
 	Camera::Initialize();
 
-	/*Quad* q;
-	q = new Quad();
+	/*Quad* q = new Quad();
 	hr = q->Initialize();*/
-	/*Dice* d;
+	Dice* d;
 	d = new Dice();
-	hr = d->Initialize();*/
-	std::string textureData("Assets\\dice.png");
-	Sprite* pSprite;
-	pSprite = new Sprite();
-	hr = pSprite->Load(textureData);
+	hr = d->Initialize();
+	//std::string textureData("Assets\\dice.png");
+	//Sprite* pSprite;
+	//pSprite = new Sprite();
+	//hr = pSprite->Load(textureData);
 	
 
 	if (FAILED(hr))
@@ -111,20 +110,22 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//カメラ更新
 			Camera::Update();
 			//↓1度ずつ回転するための変数
-			static float rot = 0;
-			rot += 0.001;
-			XMMATRIX rmat = XMMatrixRotationY(rot);
-			static float factor = 0.0;
-			factor += 0.001;
-			XMMATRIX mat = XMMatrixIdentity();
-			XMMATRIX tmat = XMMatrixTranslation(2.0*sin(factor), 2.0*cos(factor), 0.0f);
-			mat = rmat * tmat;
-			//q->Draw(mat);
-			//d->Draw(mat);
+			//static float rot = 0;
+			//rot += 0.001;
+			//XMMATRIX rmat = XMMatrixRotationY(rot);
+			//static float factor = 0.0;
+			//factor += 0.001;
+			//XMMATRIX mat = XMMatrixIdentity();
+			//XMMATRIX tmat = XMMatrixTranslation(2.0*sin(factor), 2.0*cos(factor), 0.0f);
+			//mat = rmat * tmat;
+			
+			
 			Transform trs;
-			trs.rotate_.z = 45;
-			trs.position_.x = trs.position_.x + 10.0f;
-			pSprite->Draw(trs);
+			d->Draw(trs);
+			//trs.rotate_.z = 45;
+			//trs.position_.x = trs.position_.x + 10.0f;
+			//pSprite->Draw(trs);
+		//	q->Draw(trs);
 			//描画処理
 			Direct3D::EndDraw();
 		}
