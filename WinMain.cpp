@@ -2,11 +2,13 @@
 #include <Windows.h>
 #include "Direct3D.h"
 
-#include "Quad.h"
+//#include "Quad.h"
 #include "Camera.h"
-#include "Dice.h"
+//#include "Dice.h"
 //#include "Sprite.h"
 #include "Transform.h"
+#include "FBX.h"
+
 #pragma comment(lib,"d3d11.lib")
 
 //定数宣言
@@ -72,11 +74,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	//Canera::Initialize({ 5,10,-10 }, { 0,0,0 });
 	Camera::Initialize();
 
+	FBX fbx;
+	fbx.Load("Assets\\Oden.fbx");
+
 	/*Quad* q = new Quad();
 	hr = q->Initialize();*/
-	Dice* d;
-	d = new Dice();
-	hr = d->Initialize();
+	//Dice* d;
+	//d = new Dice();
+	//hr = d->Initialize();
 	//std::string textureData("Assets\\dice.png");
 	//Sprite* pSprite;
 	//pSprite = new Sprite();
@@ -105,28 +110,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		//メッセージなし
 		else
 		{
-			//ゲームの処理
-			Direct3D::BeginDraw();
 			//カメラ更新
 			Camera::Update();
-			//↓1度ずつ回転するための変数
-			//static float rot = 0;
-			//rot += 0.001;
-			//XMMATRIX rmat = XMMatrixRotationY(rot);
-			//static float factor = 0.0;
-			//factor += 0.001;
-			//XMMATRIX mat = XMMatrixIdentity();
-			//XMMATRIX tmat = XMMatrixTranslation(2.0*sin(factor), 2.0*cos(factor), 0.0f);
-			//mat = rmat * tmat;
-			
-			
+			//ゲームの処理
+			Direct3D::BeginDraw();
 			Transform trs;
-			d->Draw(trs);
+			//d->Draw(trs);
 			//trs.rotate_.z = 45;
 			//trs.position_.x = trs.position_.x + 10.0f;
 			//pSprite->Draw(trs);
 		//	q->Draw(trs);
 			//描画処理
+			fbx.Draw(trs);
 			Direct3D::EndDraw();
 		}
 	}

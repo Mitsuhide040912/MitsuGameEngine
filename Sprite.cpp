@@ -456,7 +456,7 @@ void Sprite::Draw(Transform& transform)
 {
 	Direct3D::SetShader(SHADER_TYPE::SHADER_2D);
 	//
-	transform.Calclation();
+	transform.Calculation();
 
 	//コンスタントバッファに情報を渡す
 	PassDataToCB(transform.GetWorldMatrix());
@@ -507,7 +507,6 @@ HRESULT Sprite::CreateVertexBuffer()
 	// 頂点データ用バッファの設定
 	D3D11_BUFFER_DESC bd_vertex;
 	bd_vertex.ByteWidth = sizeof(VERTEX) * vertexNum_;
-
 	bd_vertex.Usage = D3D11_USAGE_DEFAULT;
 	bd_vertex.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd_vertex.CPUAccessFlags = 0;
@@ -605,10 +604,15 @@ void Sprite::PassDataToCB(DirectX::XMMATRIX worldMatrix)
 {
 	CONSTANT_BUFFER cb;
 	cb.matW = XMMatrixTranspose(worldMatrix); //MATRIXの掛け算のやり方がDixと違うので転置をとる
-
 	D3D11_MAPPED_SUBRESOURCE pdata;
 	Direct3D::pContext->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
 	memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
+	//サンプラーとシェーダーリソースビューをシェーダーにセット
+	ID3D11SamplerState* pSampler = pTexture_->GetSampler();
+	Direct3D::pContext->PSSetSamplers(0, 1, &pSampler);
+	ID3D11ShaderResourceView* pSRV = pTexture_->GetSRV();
+	Direct3D::pContext->PSSetShaderResources(0, 1, &pSRV);
+
 	Direct3D::pContext->Unmap(pConstantBuffer_, 0);	//再開
 }
 
@@ -627,11 +631,4 @@ void Sprite::SetBufferToPipeline()
 	//コンスタントバッファ
 	Direct3D::pContext->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
 	Direct3D::pContext->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
-
-	//サンプラーとシェーダーリソースビューをシェーダにセット
-	ID3D11SamplerState* pSampler = pTexture_->GetSampler();
-	Direct3D::pContext->PSSetSamplers(0, 1, &pSampler);
-
-	ID3D11ShaderResourceView* pSRV = pTexture_->GetSRV();
-	Direct3D::pContext->PSSetShaderResources(0, 1, &pSRV);
 }

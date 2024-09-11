@@ -9,21 +9,25 @@ using namespace DirectX;
 
 //コンスタントバッファー
 
-struct CONSTANT_BUFFER
-{
-	XMMATRIX    matW;
-};
 
-//頂点情報
-struct VERTEX
-{
-	XMVECTOR position;
-	XMVECTOR uv;
-	
-};
 
 class Sprite
 {
+
+	struct CONSTANT_BUFFER
+	{
+		XMMATRIX    matW;
+	};
+
+	//頂点情報
+	struct VERTEX
+	{
+		XMVECTOR position;
+		XMVECTOR uv;
+
+	};
+
+protected:
 	uint64_t vertexNum_;             //頂点数　多くて六つ
 	vector<VERTEX> vertices_;        //頂点情報
 	uint64_t indexNum_;             //インデックス数

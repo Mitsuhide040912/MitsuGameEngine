@@ -487,7 +487,7 @@ HRESULT Quad::Initialize()
 void Quad::Draw(Transform& transform)
 {
 	Direct3D::SetShader(SHADER_3D);
-	transform.Calclation();//トランスフォームを計算
+	transform.Calculation();//トランスフォームを計算
 	//コンスタントバッファに情報を渡す
 	PassDataToCB(transform.GetWorldMatrix());
 
