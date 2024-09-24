@@ -2,10 +2,10 @@
 #include <Windows.h>
 #include "Direct3D.h"
 
-//#include "Quad.h"
+#include "Quad.h"
 #include "Camera.h"
-//#include "Dice.h"
-//#include "Sprite.h"
+#include "Dice.h"
+#include "Sprite.h"
 #include "Transform.h"
 #include "FBX.h"
 
@@ -77,15 +77,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	FBX fbx;
 	fbx.Load("Assets\\Oden.fbx");
 
-	/*Quad* q = new Quad();
-	hr = q->Initialize();*/
-	//Dice* d;
-	//d = new Dice();
-	//hr = d->Initialize();
-	//std::string textureData("Assets\\dice.png");
-	//Sprite* pSprite;
-	//pSprite = new Sprite();
-	//hr = pSprite->Load(textureData);
+	Quad* q = new Quad();
+	hr = q->Initialize();
+	Dice* d;
+	d = new Dice();
+	hr = d->Initialize();
+	std::string textureData("Assets\\dice.png");
+	Sprite* pSprite;
+	pSprite = new Sprite();
+	hr = pSprite->Load(textureData);
 	
 
 	if (FAILED(hr))
@@ -115,11 +115,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//ƒQ[ƒ€‚Ìˆ—
 			Direct3D::BeginDraw();
 			Transform trs;
-			//d->Draw(trs);
-			//trs.rotate_.z = 45;
-			//trs.position_.x = trs.position_.x + 10.0f;
-			//pSprite->Draw(trs);
-		//	q->Draw(trs);
+			q->Draw(trs);
+			d->Draw(trs);
+			trs.rotate_.z = 45;
+			trs.position_.x = trs.position_.x + 10.0f;
+			pSprite->Draw(trs);
+			
 			//•`‰æˆ—
 			fbx.Draw(trs);
 			Direct3D::EndDraw();

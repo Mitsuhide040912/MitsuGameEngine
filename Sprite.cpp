@@ -408,6 +408,8 @@
 ////	Direct3D::pDevice->Release();
 ////
 ////}
+#if 1
+
 #include "Direct3D.h"
 #include "Sprite.h"
 #include "Camera.h"
@@ -632,3 +634,4 @@ void Sprite::SetBufferToPipeline()
 	Direct3D::pContext->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
 	Direct3D::pContext->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
 }
+#endif // 0
