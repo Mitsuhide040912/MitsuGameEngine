@@ -1,20 +1,21 @@
 //インクルード
 #include <Windows.h>
-#include "Direct3D.h"
-
-#include "Quad.h"
-#include "Camera.h"
-#include "Dice.h"
-#include "Sprite.h"
-#include "Transform.h"
-#include "FBX.h"
+#include <cstdlib>
+#include "Engine/Direct3D.h"
+#include "Engine/Camera.h"
+#include "Engine/RootJob.h"
+#include "Engine/Input.h"
+#include "Engine/Model.h"
 
 #pragma comment(lib,"d3d11.lib")
+#pragma comment(lib, "winmm.lib")
 
 //定数宣言
 const wchar_t* WIN_CLASS_NAME = L"SampleGame";  //ウィンドウクラス名
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
+
+RootJob* pRootJob = nullptr;
 
 //プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -70,23 +71,13 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		MessageBox(NULL, L"DirectXの初期化に失敗", NULL, MB_OK);
 		return hr;
 	}
-
-	//Canera::Initialize({ 5,10,-10 }, { 0,0,0 });
+	//カメラの初期化
 	Camera::Initialize();
+	//DirectInputの初期化
+	Input::Initialize(hWnd);
+	pRootJob = new RootJob(nullptr);
+	pRootJob->Initialize();
 
-	FBX fbx;
-	fbx.Load("Assets\\Oden.fbx");
-
-	Quad* q = new Quad();
-	hr = q->Initialize();
-	Dice* d;
-	d = new Dice();
-	hr = d->Initialize();
-	std::string textureData("Assets\\dice.png");
-	Sprite* pSprite;
-	pSprite = new Sprite();
-	hr = pSprite->Load(textureData);
-	
 
 	if (FAILED(hr))
 	{
@@ -109,25 +100,49 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 		//メッセージなし
 		else
-		{
+		{//括弧内が1フレーム
+			timeBeginPeriod(1);
+			static DWORD startTime = timeGetTime();
+			DWORD nowTime = timeGetTime();
+			static DWORD lastUpdateTime = nowTime;
+			static DWORD  countFps = 0;
+			timeEndPeriod(1);
+			
+			if (nowTime - startTime >= 1000)
+			{
+				std::wstring str;
+				wsprintf(str.data(), L"%u", countFps);
+				SetWindowTextW(hWnd, str.c_str());
+				countFps = 0;
+				startTime = nowTime;
+
+			}
+			if (nowTime - lastUpdateTime <= 1000.0f / 60.0f)
+			{
+				continue;//1/60秒経っていないのでスルー
+			}
+			
+			lastUpdateTime = nowTime;
+			countFps++;
+			
 			//カメラ更新
 			Camera::Update();
+			//入力の処理
+			Input::Update();
+			pRootJob->UpdateSub();
 			//ゲームの処理
 			Direct3D::BeginDraw();
-			Transform trs;
-			q->Draw(trs);
-			d->Draw(trs);
-			trs.rotate_.z = 45;
-			trs.position_.x = trs.position_.x + 10.0f;
-			pSprite->Draw(trs);
+			
+			pRootJob->DrawSub();
 			
 			//描画処理
-			fbx.Draw(trs);
+			
 			Direct3D::EndDraw();
 		}
 	}
-	//SAFE_DELETE(q);
-	//if (q != nullptr) { delete q; }
+	Model::Release();
+	pRootJob->ReleaseSub();
+	Input::Release();
 	Direct3D::Release();
 	
 	return 0;
