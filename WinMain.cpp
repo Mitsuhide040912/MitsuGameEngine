@@ -121,8 +121,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			{
 				continue;//1/60秒経っていないのでスルー
 			}
+			else
+			{
+				lastUpdateTime = nowTime;
+			}
 			
-			lastUpdateTime = nowTime;
 			countFps++;
 			
 			//カメラ更新

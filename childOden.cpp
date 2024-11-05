@@ -4,6 +4,7 @@
 childOden::childOden(GameObject* parent)
 	:GameObject(parent, "childOden"), hModel(-1)
 {
+	int z = 0;
 }
 
 childOden::~childOden()
@@ -19,12 +20,19 @@ void childOden::Initialize()
 	transform_.scale_.z = 0.4f;
 
 	transform_.rotate_.y = -70.0;
+	transform_.position_.y = 100.0;
 	//transform_.position_.x = 3.0f;
 	//transform_.position_.y = 1.0f;
 }
 
 void childOden::Update()
 {
+	
+	if (transform_.position_.z > 20)
+	{
+		KillMe();
+	}
+	transform_.position_.z += 0.1;
 	//transform_.rotate_.y += 2.5;
 }
 
