@@ -58,7 +58,7 @@ public:
 	virtual void OnCollision(GameObject* pTarget) {};
 
 	template<class T>
-	GameObject* Instantiate(GameObject* pParent)
+	T* Instantiate(GameObject* pParent)
 	{
 		T* pObject;
 		pObject = new T(pParent);

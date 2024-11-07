@@ -21,6 +21,7 @@ GameObject::~GameObject()
 void GameObject::UpdateSub()
 {
 	Update();
+	RoundRobin(GetRootJob());
 	for (auto itr = childList_.begin(); itr != childList_.end();itr++)
 	{
 		(*itr)->UpdateSub();
@@ -123,9 +124,9 @@ void GameObject::Collision(GameObject* pTarget)
 void GameObject::RoundRobin(GameObject* pTarget)
 {
 	//自分とターゲットの当たり判定
-	if (this->pCollider_ == nullptr)
+	if (this->pCollider_ == nullptr&&pTarget->pCollider_ != nullptr)
 		return;
-	if (pTarget->pCollider_ != nullptr)
+	//if (pTarget->pCollider_ != nullptr)
 		Collision(pTarget);
 	//自分とターゲットの子オブジェクト全部の当たり判定（再帰）
 	for (auto& itr : pTarget->childList_)

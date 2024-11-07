@@ -23,6 +23,9 @@ void Player::Initialize()
 	transform_.position_.z = -5.0;
 	transform_.rotate_.y   = 0.0;
 	transform_.rotate_.x   = 80.0;
+	transform_.scale_.x = 0.5;
+	transform_.scale_.y = 0.5;
+	transform_.scale_.z = 0.5;
 	//transform_.scale_.x = 10.0;
 }
 
@@ -43,11 +46,22 @@ void Player::Update()
 	{
 		transform_.position_.x += 0.3;
 	}
+
+	if (Input::IsKey(DIK_UP))
+	{
+		transform_.position_.y += 0.3;
+	}
+
+	if (Input::IsKey(DIK_DOWN))
+	{
+		transform_.position_.y -= 0.3;
+	}
+
 	if (Input::IsKeyUp(DIK_B))
 	{
 		GameObject* ob = Instantiate<childOden>(this);
 		ob->SetPosition(transform_.position_);
-		ob->SetScale(0.3, 0.3, 0.3);
+		ob->SetScale(0.1, 0.1, 0.1);
 	}
 	//if (Input::IsKey(DIK_SPACE))
 	//{
